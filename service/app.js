@@ -4,10 +4,13 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+// const bodyParser = require('body-parser')
 require('./app.env');
 const AppError = require('./utils/appError');
 const db = require('./db');
 db.start();
+
+const upload = require('./multerM');
 
 const indexRouter = require('./routes/index');
 
@@ -16,15 +19,17 @@ const contactRouter = require('./routes/contact');
 const userRouter = require('./routes/user');
 const chatRouter = require('./routes/chat');
 const groupRouter = require('./routes/group');
+const fileRouter = require('./routes/file');
 
 const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+// app.use(upload.any());
 
 app.all('*', (req, res, next) => {
   // res.header('Access-Control-Allow-Origin', '*');
@@ -43,6 +48,7 @@ app.use('/api/v1/contact', contactRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/chat', chatRouter);
 app.use('/api/v1/group', groupRouter);
+app.use('/api/v1/file', fileRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`cannot find ${req.originalUrl} on the server!`, 404));
