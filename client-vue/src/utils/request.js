@@ -23,8 +23,7 @@ axiosInstance.interceptors.request.use(
 
     if (config.formData) {
       config.headers['Content-Type'] = 'multipart/form-data'
-    }
-    if (config.formEncode) {
+    } else if (config.formEncode) {
       config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
     } else {
       config.headers['Content-Type'] = 'application/json'

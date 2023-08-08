@@ -26,10 +26,10 @@ export const useUserStore = defineStore(
           password: user.password
         })
           .then((res) => {
-            this.uid = res.data._id
-            this.userName = user.userName
-            this.token = res.token
-            this.avatar = res.data.avatar
+            uid.value = res.data._id
+            userName.value = user.userName
+            token.value = res.token
+            avatar.value = res.data.avatar
 
             resolve(res.data)
           })
@@ -43,13 +43,14 @@ export const useUserStore = defineStore(
       return new Promise((resolve, reject) => {
         registerApi({
           userName: newUser.userName,
-          password: newUser.password
+          password: newUser.password,
+          avatar: newUser.avatar
         })
           .then((res) => {
-            this.userName = newUser.userName
-            this.token = res.token
+            // userName.value = newUser.userName
+            // token.value = res.token
 
-            resolve(res.data)
+            resolve(res)
           })
           .catch((err) => {
             reject(err)

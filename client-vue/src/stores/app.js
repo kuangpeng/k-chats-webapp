@@ -10,6 +10,10 @@ export const PANELS = {
   CONVERSE: 'converse'
 }
 
+export const APP_CONFIG = {
+  avatar_default: './images/avatar.png'
+}
+
 export const useAppStore = defineStore('app', () => {
   const contactsStore = useContactsStore()
   const conversationStore = useConversationStore()
