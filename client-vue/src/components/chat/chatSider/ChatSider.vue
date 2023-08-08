@@ -1,20 +1,18 @@
 <template>
-  <div class="chat-sider" bg-light-9 w-12 flex flex-col justify-between items-center text-5>
-    <div class="sider-top">
-      <div class="avatar" pt-2 mb-5>
-        <img :src="avatar" :alt="userName" :title="userName" w-10 h-10 rd b-1 b-solid b-gray-5 />
-        <div>{{ userName }}</div>
-      </div>
-      <div class="actions" text-primary-500 mx-1>
-        <div v-for="(item, index) in navs" :key="index" class="btn" :class="{ open: item.name == openNav }" rd flex
-          justify-center items-center p-2 cursor-pointer mb-2 hover:bg-primary-100 @click="handleNav(item.name)">
+  <div class="chat-sider" bg-text w-14 flex flex-col justify-between items-center text-5>
+    <div class="sider-top" pt-2>
+      <k-avatar :src="avatar" :title="userName" :alt="userName" w-10 h-10 mb-5 />
+      <div class="actions" c-second>
+        <div v-for="(item, index) in navs" :key="index" class="btn" 
+        :class="{ open: item.name == openNav }"
+          @click="handleNav(item.name)">
           <div :class="item.normal" normal></div>
           <div :class="item.hover" hover></div>
         </div>
       </div>
     </div>
     <div class="sider-bottom" pb-3>
-      <a href="javascript:;" text-5 flex rd p-2 text-danger-500 hover:bg-primary-300 @click="handleLogout">
+      <a href="javascript:;" title="退出" text-5 flex rd p-2 text-warning-500 hover:bg-primary-300 hover:c-white @click="handleLogout">
         <div i-bi:box-arrow-left></div>
       </a>
     </div>
@@ -68,6 +66,7 @@ const handleLogout = () => {
 
 <style scoped lang="less">
 .btn {
+  @apply rd flex justify-center items-center p-2 cursor-pointer lh-none mb-2 c-white hover:bg-primary-300 ;
   div[normal] {
     display: block;
   }
@@ -77,7 +76,7 @@ const handleLogout = () => {
   }
 
   &.open {
-    background-color: var(--c-color-primary-100);
+    @apply bg-primary-300;
 
     div[normal] {
       display: none;

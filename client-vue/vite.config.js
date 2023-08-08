@@ -21,7 +21,7 @@ export default defineConfig({
     debug(),
     Components(),
     AutoImport({
-      imports: ['vue', 'vitest'],
+      imports: ['vue', 'vitest', 'vue-router'],
       eslintrc: {
         // enabled: true
       }

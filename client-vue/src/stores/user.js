@@ -1,21 +1,27 @@
 import { defineStore } from 'pinia'
-// import storage from './../utils/storage'
-import { login, register } from './../api/auth'
+import { useAppStore } from './app'
+import { login as loginApi, register as registerApi } from '@/api/auth'
 
-export const useUserStore = defineStore('user', {
-  state: () => ({
-    uid: '',
-    userName: '',
-    token: '',
-    avatar: ''
-  }),
-  getters: {},
-  actions: {
-    login(user) {
+export const useUserStore = defineStore(
+  'user',
+  () => {
+    const uid = ref('')
+    const userName = ref('')
+    const token = ref('')
+    const avatar = ref('')
+
+    function reset() {
+      uid.value = ''
+      userName.value = ''
+      token.value = ''
+      avatar.value = ''
+    }
+
+    function login(user) {
       this.userName = user.userName
 
       return new Promise((resolve, reject) => {
-        login({
+        loginApi({
           userName: user.userName,
           password: user.password
         })
@@ -31,10 +37,11 @@ export const useUserStore = defineStore('user', {
             reject(err)
           })
       })
-    },
-    register(newUser) {
+    }
+
+    function register(newUser) {
       return new Promise((resolve, reject) => {
-        register({
+        registerApi({
           userName: newUser.userName,
           password: newUser.password
         })
@@ -48,17 +55,32 @@ export const useUserStore = defineStore('user', {
             reject(err)
           })
       })
-    },
-    logout() {},
-    reset() {
-      // this.uid = ''
-      // this.userName = ''
-      // this.avatar = ''
-      // this.token = ''
-      this.$reset()
+    }
+
+    function logout() {
+      return new Promise((resolve) => {
+        const appStore = useAppStore()
+
+        appStore.resetApp()
+
+        resolve()
+      })
+    }
+
+    return {
+      uid,
+      userName,
+      token,
+      avatar,
+      reset,
+      login,
+      register,
+      logout
     }
   },
-  persist: {
-    key: 'chat-user'
+  {
+    persist: {
+      key: 'chat-user'
+    }
   }
-})
+)

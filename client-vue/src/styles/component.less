@@ -1,0 +1,76 @@
+/* btn */
+// .k-btn{
+//   @apply inline-flex justify-between items-center lh-none bg-transparent border-text transition-colors text-sm c-text py-2 px-4 rounded border-1 border-solid hover:shadow-md hover:bg-primary hover:border-primary hover:c-white;
+// }
+.k-btn>span{
+  @apply inline-flex items-center;
+}
+.k-btn [class*=k-icon]+span{
+  @apply ml-2;
+}
+.k-icon{
+  color: inherit;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  line-height: 1;
+  width: 1em;
+  height: 1em;
+}
+.k-btn[disabled]{
+  @apply shadow-inner cursor-not-allowed hover:bg-transparent hover:border-text hover:c-text;
+}
+.k-btn-primary[disabled]{
+  @apply shadow-inner cursor-not-allowed bg-primary-300 border-primary-300 hover:bg-primary-300 hover:border-primary-300 hover:c-white;
+}
+.k-btn-success[disabled]{
+  @apply shadow-inner cursor-not-allowed bg-success-300 border-success-300 hover:bg-success-300 hover:border-success-300 hover:c-white;
+}
+.k-btn-info[disabled]{
+  @apply shadow-inner cursor-not-allowed bg-info-300 border-info-300 hover:bg-info-300 hover:border-info-300 hover:c-white;
+}
+.k-btn-warning[disabled]{
+  @apply shadow-inner cursor-not-allowed bg-warning-300 border-warning-300 hover:bg-warning-300 hover:border-warning-300 hover:c-white;
+}
+.k-btn-danger[disabled]{
+  @apply shadow-inner cursor-not-allowed bg-danger-300 border-danger-300 hover:bg-danger-300 hover:border-danger-300 hover:c-white;
+}
+.k-btn.is-rounded{
+  @apply p-2 rounded-full;
+}
+.k-btn.is-text{
+  @apply border-0 bg-transparent p-1 hover:bg-second;
+}
+.k-btn.is-block{
+  @apply w-full py-3;
+}
+.k-btn.k-btn-sm{
+  @apply py-1 px-2 text-xs;
+}
+.k-btn.k-btn-lg{
+  @apply py-3 px-6 text-lg;
+}
+
+/*** input *****/
+.k-input{
+  @apply w-full h-9 border-1 border-solid border-second bg-white rounded px-2 text-4 focus:border-primary;
+
+  &.k-input-sm{
+    @apply h-7 px-1;
+  }
+}
+
+/* --- avatar ------- */
+.k-avatar{
+  @apply inline-flex justify-content align-items text-center overflow-hidden bg-gray-200 text-4;
+}
+.k-avatar>img{
+  @apply w-full h-full block object-cover;
+}
+.k-avatar.k-avatar--circle{
+  @apply rounded-full;
+}
+.k-avatar.k-avatar--square{
+  @apply rounded-1;
+}

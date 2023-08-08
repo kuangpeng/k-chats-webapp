@@ -1,32 +1,17 @@
 <template>
-  <div flex justify-center transition-top ease-in-out duration-300 bg-yellow-300>
+  <div flex justify-center transition-top ease-in-out duration-300 bg-white>
     <div flex flex-col relative w-40 b-r b-gray-4 b-r-solid pb-12 min-h-0>
       <h3 px-4 py-2 text-4 font-bold>已选成员</h3>
       <div flex-1 overflow-y-auto>
         <div px-4>
-          <div v-for="(chat, key) in selectedList" :key="key" flex gap-x-1 items-center text-4 py-2>
-            <img w-6 h-6 rounded-full :src="chat.contactInfo.avatar" :alt="chat.remark" />
+          <div v-for="chat in selectedList" :key="chat._id" flex gap-x-1 items-center text-4 py-2>
+            <k-avatar w-6 h-6 shape="circle" :src="chat.avatar" :alt="chat.remark" />
             <div>{{ chat.remark }}</div>
           </div>
         </div>
       </div>
       <div absolute left-0 right-0 bottom-0 flex justify-center p-2>
-        <button
-          type="button"
-          @click="handleCompleteChoose"
-          w-full
-          border-1
-          border-solid
-          border-warmGray-1
-          px-2
-          py-1
-          rd
-          bg-white
-          hover:bg-primary-300
-        >
-          <div class="i-bi:check"></div>
-          完 成
-        </button>
+        <k-button icon="i-bi:check" :loading="launchLoading" block @click="handleCompleteChoose">完 成</k-button>
       </div>
     </div>
     <div flex grow-1 pb-12 relative>
@@ -42,21 +27,7 @@
         </div>
       </div>
       <div w-full text-center absolute left-0 bottom-0 pb-2>
-        <button
-          type="button"
-          @click="handleBack"
-          border-1
-          border-solid
-          border-warmGray-1
-          px-2
-          py-1
-          rd
-          bg-white
-          hover:bg-primary-300
-        >
-          <div class="i-bi:arrow-left"></div>
-          返 回
-        </button>
+        <k-button icon="i-bi:arrow-left" @click="handleBack">返 回</k-button>
       </div>
     </div>
   </div>
@@ -64,6 +35,7 @@
 
 <script setup>
 import { useContactsStore } from '@/stores/contacts'
+import converse from '@/modules/converse'
 
 const contactsStore = useContactsStore()
 
@@ -73,6 +45,8 @@ const contactsList = computed(() => contactsStore.contacts)
 
 const selectedList = ref([])
 
+const launchLoading = ref(false)
+
 const isRest = ref(false)
 
 onBeforeMount(() => {
@@ -80,11 +54,11 @@ onBeforeMount(() => {
 })
 
 const handleChoose = (id) => {
-  let i = selectedList.value.findIndex((sl) => sl.contact === id)
+  let i = selectedList.value.findIndex((sl) => sl.contactId === id)
   if (i > -1) {
     selectedList.value.splice(i, 1)
   } else {
-    let c = contactsList.value.find((cl) => cl.contact === id)
+    let c = contactsList.value.find((cl) => cl.contactId === id)
 
     selectedList.value.push(c)
   }
@@ -96,11 +70,18 @@ const resetStatus = () => {
 }
 
 const handleCompleteChoose = () => {
-  let ids = selectedList.value.map((sl) => sl.contact)
+  launchLoading.value = true
 
-  emit('launchGroup', ids)
+  let ids = selectedList.value.map((sl) => sl.contactId)
+  
+  converse.launchGroup(ids).then(() => {
+    launchLoading.value = false
+    
+    emit('close')
 
-  resetStatus()
+    resetStatus()
+  })
+  
 }
 
 const handleBack = () => {

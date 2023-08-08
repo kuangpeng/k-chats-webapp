@@ -1,17 +1,17 @@
 <template>
   <div class="contact-item"
     :class="{ 'cursor-pointer': mode === 'select', 'bg-primary-300': mode === 'select' && isChoose }" flex justify-between
-    items-center px-2 py-1 border-1 border-solid border-transparent rd hover:border-primary-100 @click="handleClick">
+    items-center px-2 py-2 border-1 border-solid border-transparent rd hover:border-primary-100 @click="handleClick">
     <div flex items-center gap-x-2>
-      <img class="h-8 w-8 mt-1 flex-none rounded-full bg-gray-50" :src="avatar" :alt="name" />
+      <k-avatar :src="avatar" :alt="name" :title="name" w-8 h-8 />
       <div class="min-w-0 flex-auto">
         <p class="line-clamp-1 text-sm font-semibold leading-6 text-gray-900">{{ name }}</p>
       </div>
     </div>
-    <div v-if="mode === 'chat'" class="sm:flex sm:flex-col sm:items-end cursor-pointer" @click="handleStartTalk">
+    <div v-if="mode === 'chat'" class="sm:flex sm:flex-col sm:items-end cursor-pointer hover:c-primary" @click="handleStartTalk">
       <div class="i-bi:chat-dots" text-5></div>
     </div>
-    <div v-else-if="mode === 'add'" class="sm:flex sm:flex-col sm:items-end cursor-pointer" @click="handleAddContact">
+    <div v-else-if="mode === 'add'" class="sm:flex sm:flex-col sm:items-end cursor-pointer hover:c-primary" @click="handleAddContact">
       <div class="i-bi:plus-square-fill" text-5></div>
     </div>
   </div>
@@ -31,6 +31,7 @@ const props = defineProps({
   contactId: String,
   _id: String,
   id: String,
+  groupId: String,
   remark: String,
   avatar: String,
   name: String,
@@ -53,7 +54,7 @@ const emit = defineEmits(['choose'])
 
 const id = computed(() => {
   if (props.mode === 'chat' || props.mode === 'select') {
-    return props.contactId
+    return props.chatType === 'person' ? props.contactId : props.groupId
   } else if (props.mode === 'add') {
     return props.id
   } else {
@@ -73,13 +74,8 @@ const name = computed(() => {
 
 // TODO:
 const handleStartTalk = () => {
-  // conversationStore.startTalk({
-  //   id: id.value,
-  //   name: name.value,
-  //   chatType: props.chatType
-  // })
   converseModule.startTalk({
-    contactId: id.value,
+    id: id.value,
     chatType: props.chatType
   })
 }

@@ -1,6 +1,7 @@
 import { ACTIONTYPE, send } from './socket'
 import debug from '@/utils/debug'
 import { useContactsStore } from '@/stores/contacts'
+import converseModule from './converse'
 
 export const createContact = (data) => {
   return {
@@ -26,26 +27,39 @@ export const createGroup = (data) => {
     _id: data._id,
     groupId: data.groupId,
     owner: data.owner,
-    nickname: data.nickname,
+    nickName: data.nickName,
     remark: data.remark,
     avatar: data.groupInfo.avatar,
-    membersInfo: data.groupInfo.membersInfo
+    membersInfo: data.groupInfo.membersInfo,
+    chatType: 'group'
   }
+}
+
+const addNewGroup = (res) => {
+  const contactsStore = useContactsStore()
+
+  const newGroup = createGroup(res)
+
+  contactsStore.addNewGroup(newGroup)
+
+  return newGroup
 }
 
 // 被添加联系人
 const onNewContact = (payload) => {
   const contactsStore = useContactsStore()
 
-  contactsStore.onNewContact(payload)
+  const newContact = contactsStore.onNewContact(payload)
+
+  converseModule.addNewContactChat(newContact)
 }
 
 // 被加群
 const onJoinGroup = (payload) => {
-  console.log(payload)
-  const contactsStore = useContactsStore()
+  // 添加新增群数据
+  const newGroup = addNewGroup(payload)
 
-  contactsStore.newGroupAdd()
+  converseModule.addNewGroupChat(newGroup)
 }
 
 // 发送添加联系人事件
@@ -64,5 +78,6 @@ const emitAddContact = (id) => {
 export default {
   onNewContact,
   onJoinGroup,
-  emitAddContact
+  emitAddContact,
+  addNewGroup
 }

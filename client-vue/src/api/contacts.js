@@ -14,6 +14,14 @@ export const addContact = (data) => {
   return request.post('/contact', data)
 }
 
+export const updateContact = (id, data) => {
+  return request.put(`/contact/${id}`, data)
+}
+
 export const getMyGroups = () => {
   return request.get('/group')
+}
+
+export const updateGroup = (id, data) => {
+  return request.put(`/group/my/${id}`, data)
 }

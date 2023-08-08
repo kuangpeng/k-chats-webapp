@@ -1,92 +1,65 @@
-/* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --c-color-white: #ffffff;
-  --c-color-white-100: #f9f9f9;
-  --c-color-white-500: #f1f1f1;
-
-  --c-color-black: #1a1a1a;
-  --c-color-black-100: #242424;
-  --c-color-black-900: #000000;
-  --c-color-black-500: #2f2f2f;
-
-  --c-color-divider-light-1: rgba(60, 60, 60, 0.29);
-  --c-color-divider-light-2: rgba(60, 60, 60, 0.12);
-  --c-color-divider-dark-1: rgba(84, 84, 84, 0.85);
-  --c-color-divider-dark-2: rgba(84, 84, 84, 0.38);
-
-  --c-color-primary-100: #d5fafb;
-  --c-color-primary-200: #aef0f8;
-  --c-color-primary-300: #81d8ea;
-  --c-color-primary-400: #5db9d5;
-  --c-color-primary-500: #2f90b9;
-  --c-color-primary-600: #22719f;
-  --c-color-primary-700: #175585;
-  --c-color-primary-800: #0e3d6b;
-  --c-color-primary-900: #092b58;
-
-  --c-color-success-100: #edfbd1;
-  --c-color-success-200: #d7f8a4;
-  --c-color-success-300: #b5ec73;
-  --c-color-success-400: #92d94e;
-  --c-color-success-500: #64c11d;
-  --c-color-success-600: #4ba515;
-  --c-color-success-700: #368a0e;
-  --c-color-success-800: #246f09;
-  --c-color-success-900: #175c05;
-
-  --c-color-info-100: #cfe9fd;
-  --c-color-info-200: #a0d0fc;
-  --c-color-info-300: #6fb1f7;
-  --c-color-info-400: #4b94ef;
-  --c-color-info-500: #1468e5;
-  --c-color-info-600: #0e50c4;
-  --c-color-info-700: #0a3ba4;
-  --c-color-info-800: #062984;
-  --c-color-info-900: #031d6d;
-
-  --c-color-warning-100: #fff4cc;
-  --c-color-warning-200: #ffe799;
-  --c-color-warning-300: #ffd666;
-  --c-color-warning-400: #ffc53f;
-  --c-color-warning-500: #ffaa00;
-  --c-color-warning-600: #db8a00;
-  --c-color-warning-700: #b76d00;
-  --c-color-warning-800: #935300;
-  --c-color-warning-900: #7a4000;
-
-  --c-color-danger-100: #fde6d1;
-  --c-color-danger-200: #fbc7a4;
-  --c-color-danger-300: #f49e75;
-  --c-color-danger-400: #e97752;
-  --c-color-danger-500: #db3e1e;
-  --c-color-danger-600: #bc2515;
-  --c-color-danger-700: #9d110f;
-  --c-color-danger-800: #7f0910;
-  --c-color-danger-900: #690513;
+  --k-color-text: #03141c;
+  --k-color-second: #C9D0E3;
+  --k-color-background: #d5f0fb;
+  --k-color-primary: #2F90B9;
+  --k-color-primary-100: #D5FAFB;
+  --k-color-primary-200: #AEF0F8;
+  --k-color-primary-300: #81D8EA;
+  --k-color-primary-400: #5DB9D5;
+  --k-color-primary-500: #2F90B9;
+  --k-color-primary-600: #22719F;
+  --k-color-primary-700: #175585;
+  --k-color-primary-800: #0E3D6B;
+  --k-color-primary-900: #092B58;
+  --k-color-success: #3BD515;
+  --k-color-success-100: #E5FCCF;
+  --k-color-success-200: #C6FAA0;
+  --k-color-success-300: #9CF26F;
+  --k-color-success-400: #74E54A;
+  --k-color-success-500: #3BD515;
+  --k-color-success-600: #24B70F;
+  --k-color-success-700: #11990A;
+  --k-color-success-800: #067B09;
+  --k-color-success-900: #04660D;
+  --k-color-info: #3B55F9;
+  --k-color-info-100: #D7DFFE;
+  --k-color-info-200: #B0BEFE;
+  --k-color-info-300: #899CFD;
+  --k-color-info-400: #6B81FB;
+  --k-color-info-500: #3B55F9;
+  --k-color-info-600: #2B40D6;
+  --k-color-info-700: #1D2DB3;
+  --k-color-info-800: #121E90;
+  --k-color-info-900: #0B1377;
+  --k-color-warning: #F8CFBF;
+  --k-color-warning-100: #FEF9F2;
+  --k-color-warning-200: #FEF2E6;
+  --k-color-warning-300: #FCE8DA;
+  --k-color-warning-400: #FADECF;
+  --k-color-warning-500: #F8CFBF;
+  --k-color-warning-600: #D59B8B;
+  --k-color-warning-700: #B26C60;
+  --k-color-warning-800: #8F433C;
+  --k-color-warning-900: #772524;
+  --k-color-danger: #DD2528;
+  --k-color-danger-100: #FDE1D3;
+  --k-color-danger-200: #FBBCA7;
+  --k-color-danger-300: #F48D7A;
+  --k-color-danger-400: #EA6258;
+  --k-color-danger-500: #DD2528;
+  --k-color-danger-600: #BE1B2B;
+  --k-color-danger-700: #9F122D;
+  --k-color-danger-800: #800B2C;
+  --k-color-danger-900: #6A072B;
 }
 
-/* semantic color variables for this project */
-:root {
-  --color-background: var(--c-color-white);
-  --color-background-soft: var(--c-color-white-100);
-  --color-background-mute: var(--c-color-white-500);
-
-  --color-border: var(--c-color-divider-light-1);
-  --color-border-hover: var(--c-color-divider-light-2);
-
-  --color-text: var(--c-color-black-100);
-}
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: var(--c-color-black);
-    --color-background-soft: var(--c-color-black-100);
-    --color-background-mute: var(--c-color-black-500);
-
-    --color-border: var(--c-color-divider-dark-2);
-    --color-border-hover: var(--c-color-divider-dark-1);
-
-    --color-text: var(--c-color-white-500);
+    --k-color-text: #d5f0fb;
+    --k-color-second: #C9D0E3;
+    --k-color-background: #03141c;
   }
 }
 
@@ -102,14 +75,12 @@ body {
   width: 100%;
   min-width: 320px;
   min-height: 100vh;
-  font-family: Quotes, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  // font-family: Quotes, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+  //   Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   letter-spacing: 0.2px;
   line-height: 24px;
   font-size: 16px;
   font-weight: 400;
-  color: var(--vt-c-text-1);
-  background-color: var(--vt-c-bg);
   direction: ltr;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -188,7 +159,7 @@ pre,
 code,
 kbd,
 samp {
-  font-family: var(--vt-font-family-mono);
+  // font-family: var(--vt-font-family-mono);
 }
 
 img,
@@ -218,6 +189,7 @@ textarea {
   padding: 0;
   line-height: inherit;
   color: inherit;
+  outline: none;
 }
 
 button {
@@ -256,17 +228,17 @@ input {
 
 input:-ms-input-placeholder,
 textarea:-ms-input-placeholder {
-  color: var(--vt-c-text-3);
+  // color: var(--vt-c-text-3);
 }
 
 input::-ms-input-placeholder,
 textarea::-ms-input-placeholder {
-  color: var(--vt-c-text-3);
+  // color: var(--vt-c-text-3);
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--vt-c-text-3);
+  // color: var(--vt-c-text-3);
 }
 
 input::-webkit-outer-spin-button,
@@ -300,177 +272,4 @@ fieldset {
   position: absolute;
   white-space: nowrap;
   width: 1px;
-}
-
-/*****************/
-/* button component */
-button.c-button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  line-height: 1;
-  height: 32px;
-  white-space: nowrap;
-  cursor: pointer;
-  color: var(--c-color-black);
-  text-align: center;
-  box-sizing: border-box;
-  outline: none;
-  transition: 0.1s;
-  font-weight: 500;
-  user-select: none;
-  vertical-align: middle;
-  -webkit-appearance: none;
-  background-color: var(--color-background);
-  border: 1px solid;
-  border-color: var(--c-color-divider-dark-1);
-  padding: 8px 15px;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--c-color-primary-300);
-    border-color: var(--c-color-primary-300);
-    color: var(--c-color-primary-500);
-    outline: none;
-  }
-  &:active {
-    background-color: var(--c-color-primary-300);
-    border-color: var(--c-color-primary-500);
-    color: var(--c-color-primary-500);
-    outline: none;
-  }
-  &:focus {
-    background-color: var(--c-color-primary-300);
-    border-color: var(--c-color-primary-300);
-    color: var(--c-color-primary-500);
-    outline: none;
-  }
-}
-.c-button.c-button--primary {
-  color: var(--c-color-white);
-  background-color: var(--c-color-primary-300);
-  border-color: var(--c-color-primary-300);
-
-  &:hover {
-    background-color: var(--c-color-primary-100);
-    border-color: var(--c-color-primary-100);
-    color: var(--c-color-white);
-  }
-  &:active {
-    background-color: var(--c-color-primary-900);
-    border-color: var(--c-color-primary-900);
-  }
-  &:focus {
-    background-color: var(--c-color-primary-100);
-    border-color: var(--c-color-primary-100);
-  }
-}
-.c-button.c-button--success {
-  color: var(--c-color-white);
-  background-color: var(--c-color-success-300);
-  border-color: var(--c-color-success-300);
-
-  &:hover {
-    background-color: var(--c-color-success-100);
-    border-color: var(--c-color-success-100);
-  }
-  &:active {
-    background-color: var(--c-color-success-900);
-    border-color: var(--c-color-success-900);
-  }
-  &:focus {
-    background-color: var(--c-color-success-100);
-    border-color: var(--c-color-success-100);
-  }
-}
-.c-button.c-button--info {
-  color: var(--c-color-white);
-  background-color: var(--c-color-info-300);
-  border-color: var(--c-color-info-300);
-
-  &:hover {
-    background-color: var(--c-color-info-100);
-    border-color: var(--c-color-info-100);
-  }
-  &:active {
-    background-color: var(--c-color-info-900);
-    border-color: var(--c-color-info-900);
-  }
-  &:focus {
-    background-color: var(--c-color-info-100);
-    border-color: var(--c-color-info-100);
-  }
-}
-.c-button.c-button--warning {
-  color: var(--c-color-white);
-  background-color: var(--c-color-warning-300);
-  border-color: var(--c-color-warning-300);
-
-  &:hover {
-    background-color: var(--c-color-warning-100);
-    border-color: var(--c-color-warning-100);
-  }
-  &:active {
-    background-color: var(--c-color-warning-900);
-    border-color: var(--c-color-warning-900);
-  }
-  &:focus {
-    background-color: var(--c-color-warning-100);
-    border-color: var(--c-color-warning-100);
-  }
-}
-.c-button.c-button--danger {
-  color: var(--c-color-white);
-  background-color: var(--c-color-danger-300);
-  border-color: var(--c-color-danger-300);
-
-  &:hover {
-    background-color: var(--c-color-danger-100);
-    border-color: var(--c-color-danger-100);
-  }
-  &:active {
-    background-color: var(--c-color-danger-900);
-    border-color: var(--c-color-danger-900);
-  }
-  &:focus {
-    background-color: var(--c-color-danger-100);
-    border-color: var(--c-color-danger-100);
-  }
-}
-
-.c-button.c-button--small {
-  height: 24px;
-  padding: 5px 11px;
-  font-size: 12px;
-  border-radius: 3px;
-
-  &.is-round {
-    padding: 5px 11px;
-  }
-  &.is-circle {
-    padding: 5px;
-  }
-}
-.c-button.c-button--large {
-  height: 40px;
-  padding: 12px 19px;
-  font-size: 14px;
-
-  &.is-round {
-    padding: 12px 19px;
-  }
-  &.is-circle {
-    padding: 12px;
-  }
-}
-
-.c-button.is-round {
-  border-radius: 20px;
-  padding: 8px 15px;
-}
-.c-button.is-round {
-  border-radius: 50%;
-  padding: 8px;
 }

@@ -1,16 +1,20 @@
 <template>
-  <div h-screen flex flex-justify-center flex-items-center>
-    <the-chat />
+  <div screen-full flex justify-center items-center>
+    <the-chat :loading="loading" />
   </div>
 </template>
 
 <script setup>
-import socket from '@/modules/socket'
 import { useAppStore } from '@/stores/app'
 
 const appStore = useAppStore()
 
-appStore.initChat()
+const loading = ref(true)
 
-socket()
+appStore.initChat().then(() => {
+  setTimeout(() => {
+    loading.value = false
+  }, 100)
+})
+
 </script>

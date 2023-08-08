@@ -2,7 +2,7 @@ import router from './router'
 // import storage from './utils/storage'
 import { useUserStore } from './stores/user'
 
-const whiteList = ['Login', 'Register']
+const whiteList = ['Login', 'Register', 'Test']
 
 router.beforeEach((to, _from, next) => {
   const userStore = useUserStore()

@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia'
+import { useUserStore } from './user'
 import { useContactsStore } from './contacts'
 import { useConversationStore } from './conversation'
 import converse from '@/modules/converse'
+import socket from '@/modules/socket'
 
 export const PANELS = {
   CONTACT: 'contact',
@@ -11,16 +13,37 @@ export const PANELS = {
 export const useAppStore = defineStore('app', () => {
   const contactsStore = useContactsStore()
   const conversationStore = useConversationStore()
+  const activePanel = ref(PANELS.CONVERSE)
 
-  async function initChat() {
-    contactsStore.initContacts()
-    contactsStore.initGroups()
-    // await conversationStore.initHistoryChats()
+  function initChat() {
+    return new Promise((resolve) => {
+      Promise.all([
+        contactsStore.initContacts(),
+        contactsStore.initGroups(),
+        conversationStore.initHistoryChats()
+      ]).then(() => {
+        converse.init()
 
-    converse.init()
+        socket()
+
+        resolve()
+      })
+    })
   }
 
-  const activePanel = ref(PANELS.CONVERSE)
+  function resetApp() {
+    const userStore = useUserStore()
+    const contactsStore = useContactsStore()
+    const conversationStore = useConversationStore()
+
+    activePanel.value = PANELS.CONVERSE
+
+    userStore.reset()
+    contactsStore.reset()
+    conversationStore.reset()
+
+    converse.reset()
+  }
 
   function changeActivePanel(p) {
     if (Object.values(PANELS).indexOf(p) === -1) return false
@@ -31,6 +54,7 @@ export const useAppStore = defineStore('app', () => {
   return {
     initChat,
     activePanel,
-    changeActivePanel
+    changeActivePanel,
+    resetApp
   }
 })

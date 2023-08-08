@@ -50,20 +50,10 @@ const start = () => {
     }
 
     registerOn(ACTIONTYPE.CHAT.ON_RECEIVE, converse.receive)
-    // 接收消息
-    // socket.on('receive', (payload) => {
-    //   conversationStore.receive(payload)
-    // })
 
     registerOn(ACTIONTYPE.CONTACT.ON_NEW, contact.onNewContact)
-    // socket.on('contact:new', (payload) => {
-    //   contactsStore.newContactAdd(payload)
-    // })
 
     registerOn(ACTIONTYPE.GROUP.ON_JOIN, contact.onJoinGroup)
-    // socket.on('group:new', (payload) => {
-    //   conversationStore.newGroupAdd(payload)
-    // })
 
     socket.connect()
   }

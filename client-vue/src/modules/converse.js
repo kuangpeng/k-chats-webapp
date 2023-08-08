@@ -4,44 +4,15 @@ import { useConversationStore } from '@/stores/conversation'
 import { useContactsStore } from '@/stores/contacts'
 import { ACTIONTYPE, send } from './socket'
 import { ChatMain } from './chat'
+import { createContact, createGroup, default as contactModule } from './contact'
 
 let isInit = false
 let chatMain = null
 
-export const createChat = (data) => {
-  let val = {
-    id: '',
-    chatType: data.chatType,
-    remark: data.remark,
-    avatar: data.avatar,
-    messages: []
-  }
+const reset = () => {
+  isInit = false
 
-  if (data.chatType === 'person') {
-    val.id = data.contactId
-  } else {
-    val.id = data.groupId
-  }
-
-  return val
-}
-
-export const createMessage = (data) => {
-  const now = new Date()
-  const res = {
-    _id: data._id || now.getTime(),
-    body: data.body,
-    sender: data.sender,
-    chatType: data.chatType,
-    sendAt: now
-  }
-
-  if (data.chatType === 'person') {
-    res['receiver'] = data.id || data.receiver
-  } else {
-    res['groupId'] = data.id || data.groupId
-  }
-  return res
+  chatMain = null
 }
 
 const init = async () => {
@@ -49,18 +20,48 @@ const init = async () => {
 
   initChat()
 
+  initChatHistory()
+
   isInit = true
 }
 
 const initChat = () => {
   const userStore = useUserStore()
 
-  chatMain = new ChatMain(userStore.uid)
+  chatMain = new ChatMain({
+    uid: userStore.uid,
+    name: userStore.userName,
+    avatar: userStore.avatar
+  })
+}
+
+const initChatHistory = () => {
+  const conversationStore = useConversationStore()
+
+  conversationStore.historyChats.forEach((hc) => {
+    const contact = hc.chatType === 'person' ? createContact(hc) : createGroup(hc)
+
+    const newChat = chatMain.saveChat({ chatType: hc.chatType, ...contact })
+
+    newChat.initMessages(hc.records)
+
+    conversationStore.addNewChat(newChat)
+  })
+}
+
+const focusChat = (activeChat) => {
+  const appStore = useAppStore()
+  const conversationStore = useConversationStore()
+
+  //  switch panel
+  appStore.changeActivePanel(PANELS.CONVERSE)
+
+  // await nextTick()
+  conversationStore.changeActiveChatUser(activeChat)
 }
 
 // 从联系人列表发起聊天
 const startTalk = async (payload) => {
-  const appStore = useAppStore()
   const contactsStore = useContactsStore()
   const conversationStore = useConversationStore()
 
@@ -71,8 +72,7 @@ const startTalk = async (payload) => {
   }
 
   if (payload.chatType === 'person') {
-    const contact = contactsStore.findContact(payload.contactId)
-    // const newContact = createChat(contact)
+    const contact = contactsStore.findContact(payload.id)
     const newContact = chatMain.saveChat({ chatType: 'person', ...contact })
 
     activeChat.id = contact.contactId
@@ -80,9 +80,8 @@ const startTalk = async (payload) => {
 
     conversationStore.addNewChat(newContact)
   } else {
-    const group = contactsStore.findGroup(payload.groupId)
-    // const newGroup = createChat(group)
-    const newGroup = chatMain.saveChat({ chatType: 'person', ...group })
+    const group = contactsStore.findGroup(payload.id)
+    const newGroup = chatMain.saveChat({ chatType: 'group', ...group })
 
     activeChat.id = group.groupId
     activeChat.name = newGroup.remark
@@ -90,40 +89,18 @@ const startTalk = async (payload) => {
     conversationStore.addNewChat(newGroup)
   }
 
-  //  switch panel
-  appStore.changeActivePanel(PANELS.CONVERSE)
-
-  await nextTick()
-
-  conversationStore.changeActiveChatUser(activeChat)
+  focusChat(activeChat)
 }
 
 // 发消息
-const talk = (id, chatType, message) => {
+const talk = (id, message) => {
+  const conversationStore = useConversationStore()
+
   const chat = chatMain.findChat(id)
 
   const newMessage = chat.talk(message)
 
-  // const userStore = useUserStore()
-  // const contactsStore = useContactsStore()
-  // const conversationStore = useConversationStore()
-
-  // const data = {
-  //   body: message,
-  //   chatType,
-  //   sender: userStore.uid
-  // }
-  // if (chatType === 'person') {
-  //   const contact = contactsStore.findContact(id)
-  //   data.id = contact.contactId
-  // } else {
-  //   const group = contactsStore.findGroup(id)
-  //   data.id = group.groupId
-  // }
-
-  // const newMessage = createMessage(data)
-
-  // conversationStore.addNewMessage(id, newMessage)
+  conversationStore.addNewMessage(id, newMessage)
 
   send(ACTIONTYPE.CHAT.TALK, newMessage)
 }
@@ -134,26 +111,14 @@ const receive = (response) => {
   // 1 判断会话列表是否有此联系人
   const { sender, groupId, chatType } = response
 
-  let id
-  if (chatType === 'person') {
-    id = sender
-  } else {
-    id = groupId
-  }
-  // let chat = conversationStore.findChat(id)
+  const id = chatType === 'person' ? sender : groupId
   let chat = chatMain.findChat(id)
 
   // 1 -1若无，新增此联系人会话
   if (!chat) {
     const contactsStore = useContactsStore()
-    let nc
-    if (chatType === 'person') {
-      nc = contactsStore.findContact(id)
-    } else {
-      nc = contactsStore.findGroup(id)
-    }
 
-    // chat = createChat(nc)
+    const nc = chatType === 'person' ? contactsStore.findContact(id) : contactsStore.findGroup(id)
 
     chat = chatMain.saveChat(nc)
 
@@ -161,14 +126,96 @@ const receive = (response) => {
   }
 
   // 2 向此联系人会话消息列表中新增消息
-  // conversationStore.addNewMessage(chat.id, createMessage(response))
-  chat.receive(response)
+  const newMessage = chat.receive(response)
+
+  conversationStore.addNewMessage(chat.id, newMessage, true)
+
   // 3 提醒新消息
+}
+
+// 发起群聊
+const launchGroup = (ids) => {
+  return new Promise((resolve, reject) => {
+    let newGroup = {
+      members: ids
+    }
+
+    send(ACTIONTYPE.GROUP.CREATE, newGroup)
+      .then((res) => {
+        // 更新群列表
+        const group = contactModule.addNewGroup(res)
+
+        addNewGroupChat(group)
+
+        resolve()
+      })
+      .catch(reject)
+  })
+}
+
+const addNewContactChat = (contact) => {
+  const conversationStore = useConversationStore()
+
+  const newContactChat = chatMain.saveChat({ chatType: 'person', ...contact })
+
+  conversationStore.addNewChat(newContactChat)
+
+  // 显示群聊框
+  let activeChat = {
+    id: contact.contactId,
+    name: contact.remark,
+    chatType: 'group'
+  }
+
+  focusChat(activeChat)
+}
+
+const addNewGroupChat = (group) => {
+  const conversationStore = useConversationStore()
+  // 添加group chat
+  const newGroup = chatMain.saveChat({ chatType: 'group', ...group })
+
+  conversationStore.addNewChat(newGroup)
+
+  // 显示群聊框
+  let activeChat = {
+    id: group.groupId,
+    name: group.remark,
+    chatType: 'group'
+  }
+
+  focusChat(activeChat)
+}
+
+/**
+ *
+ * @param {*} id
+ * @param {String} chatType
+ * @param {Object} updateVal
+ * @param {String} updateVal.key 修改的键名
+ * @param {String} updateVal.val 修改的值
+ *
+ */
+const updateChatRemark = (id, chatType, updateVal) => {
+  const conversationStore = useConversationStore()
+  const contactsStore = useContactsStore()
+
+  conversationStore.updateChat(id, updateVal)
+  if (chatType === 'person') {
+    contactsStore.updateContact(id, updateVal)
+  } else {
+    contactsStore.updateGroup(id, updateVal)
+  }
 }
 
 export default {
   init,
+  reset,
   receive,
   startTalk,
-  talk
+  talk,
+  launchGroup,
+  addNewContactChat,
+  addNewGroupChat,
+  updateChatRemark
 }

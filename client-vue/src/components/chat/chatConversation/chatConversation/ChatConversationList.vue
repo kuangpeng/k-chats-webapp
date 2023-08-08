@@ -1,9 +1,9 @@
 <template>
   <div flex flex-col>
-    <h3 px-4 py-2 text-5 font-bold>Messages</h3>
+    <h3 px-4 py-3 text-5 font-bold>消 息</h3>
     <div overflow-auto grow-1>
       <template v-for="(chat, key) in chatList" :key="key">
-        <chat-conversation-item :class="{ active: isActiveContact(chat) }" v-bind="chat" @click="handleChat(chat)" />
+        <chat-conversation-item :class="{ active: isActiveContact(chat) }" v-bind="chat" border-0 border-b-1 border-dotted border-gray-100 last:border-none @click="handleChat(chat)" />
       </template>
     </div>
   </div>

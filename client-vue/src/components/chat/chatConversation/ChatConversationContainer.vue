@@ -1,5 +1,5 @@
 <template>
-  <div class="conversation-container" bg-blue-3 flex>
+  <div class="conversation-container" flex>
     <chat-conversation-list bg-white w-60 />
     <div flex grow-1>
       <KeepAlive>
