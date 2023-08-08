@@ -98,3 +98,25 @@ exports.getStrangers = catchAsync(async (req, res, next) => {
 
   next();
 });
+
+exports.updateContact = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  const { remark } = req.body;
+  const contactId = req.params.id;
+
+  if (!remark) return next(new AppError('缺少更新数据', 403));
+
+  await Contacts.findOneAndUpdate(
+    {
+      owner: user._id,
+      contact: contactId
+    },
+    {
+      remark
+    }
+  );
+
+  res.json({
+    status: 'success'
+  });
+});

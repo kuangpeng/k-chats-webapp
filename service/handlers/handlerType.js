@@ -4,7 +4,7 @@ const contact = {
 };
 
 const group = {
-  NEW: 'group:new',
+  JOIN: 'group:join',
   CREATE: 'group:create'
 };
 

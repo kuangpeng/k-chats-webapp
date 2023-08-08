@@ -7,9 +7,9 @@ module.exports = (httpServer) => {
   // init io instance
   const io = new Server(httpServer, {
     cors: {
-      origin: ['https://admin.socket.io', 'http://localhost:4000'],
-      credentials: true
-      // origin: '*'
+      // origin: ['https://admin.socket.io', 'http://localhost:4000'],
+      // credentials: true
+      origin: '*'
     }
   });
 

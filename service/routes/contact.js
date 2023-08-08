@@ -18,6 +18,9 @@ router
   .get(authController.checkAuth, contactsController.getMyContacts)
   .post(authController.checkAuth, contactsController.createContacts);
 
-router.route('/:id').get(contactsController.getContactsById);
+router
+  .route('/:id')
+  .get(contactsController.getContactsById)
+  .put(authController.checkAuth, contactsController.updateContact);
 
 module.exports = router;

@@ -151,3 +151,23 @@ exports.leaveGroup = catchAsync(async (req, res, next) => {
     status: 'success'
   });
 });
+
+exports.updateMyGroup = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  const { nickName, remark } = req.body;
+  const groupId = req.params.id;
+
+  if (!remark && !nickName) return next(new AppError('缺少更新数据', 403));
+
+  await UserGroup.findOneAndUpdate(
+    { owner: user._id, groupId },
+    {
+      remark,
+      nickName
+    }
+  );
+
+  res.json({
+    status: 'success'
+  });
+});

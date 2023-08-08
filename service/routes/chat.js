@@ -9,6 +9,10 @@ router
   .get(authController.checkAuth, chatController.getChatsGroup);
 
 router
+  .route('/getMore')
+  .get(authController.checkAuth, chatController.getChatsGroupByDate);
+
+router
   .route('/')
   .get(authController.checkAuth, chatController.getChats)
   .post(authController.checkAuth, chatController.addChat);

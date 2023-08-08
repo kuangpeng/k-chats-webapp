@@ -17,10 +17,7 @@ module.exports = (io, socket) => {
       (chatType == 'person' && !receiver) ||
       (chatType == 'group' && !groupId)
     ) {
-      return (
-        typeof callback === 'function' &&
-        callback(new AppError('缺少数据', 400))
-      );
+      return callback(new AppError('缺少数据', 400));
     }
 
     let data = {

@@ -10,6 +10,10 @@ router
   .post(authController.checkAuth, groupController.createGroup);
 
 router
+  .route('/my/:id')
+  .put(authController.checkAuth, groupController.updateMyGroup);
+
+router
   .route('/:id')
   .put(authController.checkAuth, groupController.joinGroup)
   .delete(authController.checkAuth, groupController.leaveGroup);

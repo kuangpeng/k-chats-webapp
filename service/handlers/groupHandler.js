@@ -19,10 +19,7 @@ module.exports = async (io, socket) => {
     }
     if (!members || members.length == 0) {
       // return next(new AppError('缺少成员数据(members)', 404));
-      return (
-        typeof callback === 'function' &&
-        callback(new AppError('缺少成员数据', 404))
-      );
+      return callback(new AppError('缺少成员数据', 404));
     }
 
     // 默认头像
@@ -31,13 +28,13 @@ module.exports = async (io, socket) => {
     }
     const uid = user.get('_id', String);
     // 添加创建者
-    members = [uid, ...members];
+    const allMembers = [uid, ...members];
 
     const group = new Groups({
       groupName,
-      creator: user._id,
+      creator: uid,
       avatar,
-      members
+      members: allMembers
     });
 
     const newGroup = await group
@@ -54,8 +51,7 @@ module.exports = async (io, socket) => {
     // 为群成员添加 群(UserGroup)
     await UserGroup.insertMany(userGroups);
 
-    const myNewGroup = await UserGroup.findOne({
-      owner: user._id,
+    const newUserGroups = await UserGroup.find({
       groupId: newGroup._id
     });
 
@@ -67,16 +63,24 @@ module.exports = async (io, socket) => {
     const allSockets = await io.fetchSockets();
 
     const newGroupId = newGroup.get('_id', String);
+
     groupMembersSocket.forEach((gm) => {
       if (!gm) return;
       let ms = allSockets.find((as) => as.id === gm.socketId);
       if (ms) {
         ms.join('group:' + newGroupId);
-        ms.emit(HANDLERTYPE.GROUP.NEW, { groupId: newGroupId });
+
+        let g = newUserGroups.find(
+          (ng) => ng.get('owner', String) === gm.userId
+        );
+        ms.emit(HANDLERTYPE.GROUP.JOIN, g);
       }
     });
 
-    typeof callback === 'function' && callback(myNewGroup);
+    socket.join('group:' + newGroupId);
+    const mg = newUserGroups.find((ng) => ng.get('owner', String) === uid);
+
+    callback(null, mg);
   });
 
   // 将用户加入所在群room
