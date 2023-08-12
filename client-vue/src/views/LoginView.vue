@@ -13,7 +13,6 @@ const userModel = reactive({
 const loading = ref(false)
 
 const handleLogin = () => {
-  console.log('login---------------')
   loading.value = true
   const user = {
     userName: userModel.name,
@@ -39,7 +38,7 @@ const handleLogin = () => {
 
 <template>
   <div class="login" screen-full flex justify-center items-center>
-    <div class="login-form" w-95 rd-3 border="1 solid gray-200" bg-white>
+    <div class="login-form" w-95 rd-3 overflow-hidden border="1 solid gray-200" bg-white v-loading="loading" element-loading-text="登录中...">
       <form h-70 py-sm px-5 flex flex-col flex-justify-between flex-items-center @keydown.enter="handleLogin">
         <h3 text-center text-lg>Let`s Chat!</h3>
         <input type="text" class="k-input" v-model="userModel.name" placeholder="用户名" />
